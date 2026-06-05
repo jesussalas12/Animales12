@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animales</title>
+
+<style>
+:root{
+--bg:#f0f2f5;
+--text:#222;
+--nav:#222;
+--card:#fff;
+}
+
+.dark{
+--bg:#121212;
+--text:#fff;
+--nav:#1f1f1f;
+--card:#1e1e1e;
+}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+nav{
+background:var(--nav);
+padding:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+}
+
+.menu-btn,.dark-btn{
+cursor:pointer;
+font-size:22px;
+}
+
+.menu{
+display:none;
+flex-direction:column;
+background:var(--nav);
+}
+
+.menu button{
+background:none;
+border:none;
+color:white;
+padding:12px;
+cursor:pointer;
+font-size:16px;
+}
+
+.seccion{
+display:none;
+padding:20px;
+text-align:center;
+}
+
+.activa{
+display:block;
+}
+
+.card{
+background:var(--card);
+max-width:500px;
+margin:auto;
+padding:15px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+.card img{
+width:100%;
+border-radius:10px;
+cursor:pointer;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin:5px;
+}
+
+input{
+padding:10px;
+width:80%;
+max-width:400px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="menu-btn" onclick="toggleMenu()">☰</div>
+<div class="dark-btn" onclick="modo()">🌙</div>
+</nav>
+
+<div class="menu" id="menuNav">
+<button onclick="ir('inicio')">🏠 Inicio</button>
+<button onclick="ir('perros')">🐶 Perros</button>
+<button onclick="ir('gatos')">🐱 Gatos</button>
+<button onclick="ir('moscas')">🪰 Moscas</button>
+</div>
+
+<section id="inicio" class="seccion activa">
+
+<h1>🐾 Animales</h1>
+
+<h3 id="visitas"></h3>
+
+<input
+id="buscar"
+placeholder="Buscar animal..."
+onkeyup="buscar()">
+
+<br><br>
+
+<button onclick="datoCurioso()">
+📚 Dato Curioso
+</button>
+
+<p>
+Bienvenido a la página Animales.
+Aquí encontrarás información,
+imágenes y sonidos de distintos animales.
+</p>
+
+</section>
+
+<section id="perros" class="seccion">
+
+<h1>🐶 Perros</h1>
+
+<div class="card animal" data-nombre="perro">
+
+<img src="https://images.dog.ceo/breeds/labrador/n02099712_5643.jpg">
+
+<h2>Labrador Retriever</h2>
+
+<p>
+El Labrador Retriever es una raza muy inteligente,
+amistosa y obediente. Es uno de los perros más
+populares del mundo y suele utilizarse como perro guía,
+de rescate y de compañía.
+</p>
+
+<button onclick="sonidoPerro()">
+🔊 Sonido
+</button>
+
+<button onclick="ir('inicio')">
+🏠 Menú
+</button>
+
+</div>
+
+</section>
+
+<section id="gatos" class="seccion">
+
+<h1>🐱 Gatos</h1>
+
+<div class="card animal" data-nombre="gato">
+
+<img src="https://cdn2.thecatapi.com/images/MTY3ODIyMQ.jpg">
+
+<h2>Gato Doméstico</h2>
+
+<p>
+Los gatos son mamíferos ágiles y curiosos.
+Pueden saltar grandes alturas, tienen excelente
+visión nocturna y son una de las mascotas más
+queridas en el mundo.
+</p>
+
+<button onclick="sonidoGato()">
+🔊 Sonido
+</button>
+
+<button onclick="ir('inicio')">
+🏠 Menú
+</button>
+
+</div>
+
+</section>
+
+<section id="moscas" class="seccion">
+
+<h1>🪰 Moscas</h1>
+
+<div class="card animal" data-nombre="mosca">
+
+<img src = "LED/mosca-domestica-02.jpg"/>
+
+<h2>Mosca Doméstica</h2>
+
+<p>
+Las moscas pertenecen al orden Diptera.
+Son insectos capaces de volar rápidamente
+y ayudan en la descomposición de materia
+orgánica dentro de los ecosistemas.
+</p>
+
+<button onclick="sonidoMosca()">
+🔊 Sonido
+</button>
+
+<button onclick="ir('inicio')">
+🏠 Menú
+</button>
+
+</div>
+
+</section>
+
+<script>
+
+// Navegación
+function ir(sec){
+
+document.querySelectorAll(".seccion")
+.forEach(s=>s.classList.remove("activa"));
+
+document.getElementById(sec)
+.classList.add("activa");
+
+document.getElementById("menuNav")
+.style.display="none";
+
+}
+
+// Menú lateral
+function toggleMenu(){
+
+let m=document.getElementById("menuNav");
+
+m.style.display=
+m.style.display==="flex"
+?"none"
+:"flex";
+
+}
+
+// Tema oscuro
+if(localStorage.getItem("tema")==="dark"){
+document.body.classList.add("dark");
+}
+
+function modo(){
+
+document.body.classList.toggle("dark");
+
+localStorage.setItem(
+"tema",
+document.body.classList.contains("dark")
+?"dark"
+:"light"
+);
+
+}
+
+// Visitas
+let visitas=
+parseInt(localStorage.getItem("visitas")||0)+1;
+
+localStorage.setItem("visitas",visitas);
+
+window.onload=()=>{
+
+document.getElementById("visitas")
+.innerText="👀 Visitas: "+visitas;
+
+};
+
+// Buscador
+function buscar(){
+
+let texto=
+document.getElementById("buscar")
+.value.toLowerCase();
+
+if(texto.includes("perro")){
+ir("perros");
+}
+
+else if(texto.includes("gato")){
+ir("gatos");
+}
+
+else if(texto.includes("mosca")){
+ir("moscas");
+}
+
+}
+
+// Datos curiosos
+const datos=[
+
+"🐶 Los perros tienen un olfato hasta 100 mil veces más potente que el de los humanos.",
+
+"🐱 Los gatos pueden dormir entre 12 y 16 horas al día.",
+
+"🪰 Las moscas baten sus alas más de 200 veces por segundo."
+
+];
+
+function datoCurioso(){
+
+alert(
+datos[
+Math.floor(Math.random()*datos.length)
+]
+);
+
+}
+
+// Sonidos
+
+function sonidoPerro(){
+
+let audio=new AudioContext();
+let osc=audio.createOscillator();
+
+osc.frequency.value=180;
+
+osc.connect(audio.destination);
+
+osc.start();
+
+osc.stop(audio.currentTime+0.4);
+
+}
+
+function sonidoGato(){
+
+let audio=new AudioContext();
+let osc=audio.createOscillator();
+
+osc.frequency.value=600;
+
+osc.connect(audio.destination);
+
+osc.start();
+
+osc.stop(audio.currentTime+0.4);
+
+}
+
+function sonidoMosca(){
+
+let audio=new AudioContext();
+let osc=audio.createOscillator();
+
+osc.frequency.value=900;
+
+osc.connect(audio.destination);
+
+osc.start();
+
+osc.stop(audio.currentTime+0.2);
+
+}
+
+// Zoom de imágenes
+
+document.addEventListener("click",e=>{
+
+if(e.target.tagName==="IMG"){
+
+let fondo=document.createElement("div");
+
+fondo.style.cssText=`
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.9);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+`;
+
+fondo.innerHTML=`
+<img src="${e.target.src}"
+style="max-width:90%;max-height:90%;">
+`;
+
+fondo.onclick=()=>fondo.remove();
+
+document.body.appendChild(fondo);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
